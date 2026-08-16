@@ -13,7 +13,7 @@ class Core(commands.Cog):
     async def ping(self, ctx: commands.Context):
         """Check the bot's latency."""
         start = time.monotonic()
-        message = await ctx.reply("Pinging...")
+        message = await ctx.send("Pinging...")
         end = time.monotonic()
 
         api_latency = round(self.bot.latency * 1000)  # websocket latency

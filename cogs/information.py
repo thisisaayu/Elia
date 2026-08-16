@@ -46,7 +46,7 @@ class Information(commands.Cog):
 
         embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.display_avatar.url)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(name="userinfo", aliases=["ui", "whois"])
     @commands.guild_only()
@@ -87,7 +87,7 @@ class Information(commands.Cog):
 
         embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.display_avatar.url)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(name="avatar", aliases=["av", "pfp"])
     async def avatar(self, ctx: commands.Context, member: discord.Member = None):
@@ -101,7 +101,7 @@ class Information(commands.Cog):
         embed.set_image(url=member.display_avatar.url)
         embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.display_avatar.url)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(name="botinfo", aliases=["bi", "stats"])
     async def botinfo(self, ctx: commands.Context):
@@ -131,7 +131,7 @@ class Information(commands.Cog):
 
         embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.display_avatar.url)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
 
 async def setup(bot: commands.Bot):

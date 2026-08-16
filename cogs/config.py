@@ -40,7 +40,7 @@ class Config(commands.Cog):
             description=f"✅ Mod role set to {role.mention}. Members with this role can now use moderation commands.",
             color=discord.Color.green(),
         )
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(name="modrole")
     @commands.guild_only()
@@ -52,7 +52,7 @@ class Config(commands.Cog):
                 description="⚠️ No mod role set yet. An admin can set one with `,setmodrole @role`.",
                 color=discord.Color.orange(),
             )
-            return await ctx.reply(embed=embed)
+            return await ctx.send(embed=embed)
 
         role = ctx.guild.get_role(role_id)
         if not role:
@@ -60,13 +60,13 @@ class Config(commands.Cog):
                 description="⚠️ The configured mod role no longer exists. Please set a new one with `,setmodrole @role`.",
                 color=discord.Color.orange(),
             )
-            return await ctx.reply(embed=embed)
+            return await ctx.send(embed=embed)
 
         embed = discord.Embed(
             description=f"Current mod role: {role.mention}",
             color=discord.Color.blurple(),
         )
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
 
 async def setup(bot: commands.Bot):

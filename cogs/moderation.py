@@ -49,19 +49,19 @@ class Moderation(commands.Cog):
                 description="❌ You need the mod role to use this command.",
                 color=discord.Color.red(),
             )
-            await ctx.reply(embed=embed)
+            await ctx.send(embed=embed)
         elif isinstance(error, commands.MissingRequiredArgument):
             embed = discord.Embed(
                 description=f"❌ Missing an argument: `{error.param.name}`",
                 color=discord.Color.red(),
             )
-            await ctx.reply(embed=embed)
+            await ctx.send(embed=embed)
         elif isinstance(error, commands.BadArgument):
             embed = discord.Embed(
                 description="❌ Couldn't find that user/role. Try mentioning them or using their ID.",
                 color=discord.Color.red(),
             )
-            await ctx.reply(embed=embed)
+            await ctx.send(embed=embed)
         else:
             raise error
 
@@ -74,7 +74,7 @@ class Moderation(commands.Cog):
         """Kick a member from the server."""
         if not can_act_on(ctx.author, member):
             embed = discord.Embed(description="❌ You can't act on that member.", color=discord.Color.red())
-            return await ctx.reply(embed=embed)
+            return await ctx.send(embed=embed)
 
         try:
             await member.send(f"You were kicked from **{ctx.guild.name}**.\nReason: {reason}")
@@ -87,7 +87,7 @@ class Moderation(commands.Cog):
             description=f"👢 **{member}** was kicked.\n**Reason:** {reason}",
             color=discord.Color.orange(),
         )
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     # ---------------- BAN ----------------
     @commands.command(name="ban")
@@ -98,7 +98,7 @@ class Moderation(commands.Cog):
         """Ban a member from the server."""
         if not can_act_on(ctx.author, member):
             embed = discord.Embed(description="❌ You can't act on that member.", color=discord.Color.red())
-            return await ctx.reply(embed=embed)
+            return await ctx.send(embed=embed)
 
         try:
             await member.send(f"You were banned from **{ctx.guild.name}**.\nReason: {reason}")
@@ -111,7 +111,7 @@ class Moderation(commands.Cog):
             description=f"🔨 **{member}** was banned.\n**Reason:** {reason}",
             color=discord.Color.red(),
         )
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     # ---------------- UNBAN ----------------
     @commands.command(name="unban")
@@ -125,13 +125,13 @@ class Moderation(commands.Cog):
             await ctx.guild.unban(user, reason=f"By {ctx.author}: {reason}")
         except discord.NotFound:
             embed = discord.Embed(description="❌ That user isn't banned or doesn't exist.", color=discord.Color.red())
-            return await ctx.reply(embed=embed)
+            return await ctx.send(embed=embed)
 
         embed = discord.Embed(
             description=f"✅ **{user}** was unbanned.\n**Reason:** {reason}",
             color=discord.Color.green(),
         )
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     # ---------------- TIMEOUT ----------------
     @commands.command(name="timeout", aliases=["mute"])
@@ -142,11 +142,11 @@ class Moderation(commands.Cog):
         """Timeout (mute) a member for a number of minutes (max 40320 = 28 days)."""
         if not can_act_on(ctx.author, member):
             embed = discord.Embed(description="❌ You can't act on that member.", color=discord.Color.red())
-            return await ctx.reply(embed=embed)
+            return await ctx.send(embed=embed)
 
         if minutes <= 0 or minutes > 40320:
             embed = discord.Embed(description="❌ Minutes must be between 1 and 40320 (28 days).", color=discord.Color.red())
-            return await ctx.reply(embed=embed)
+            return await ctx.send(embed=embed)
 
         duration = datetime.timedelta(minutes=minutes)
         await member.timeout(duration, reason=f"By {ctx.author}: {reason}")
@@ -155,7 +155,7 @@ class Moderation(commands.Cog):
             description=f"🔇 **{member}** was timed out for **{minutes} minute(s)**.\n**Reason:** {reason}",
             color=discord.Color.orange(),
         )
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(name="untimeout", aliases=["unmute"])
     @has_mod_role()
@@ -168,7 +168,7 @@ class Moderation(commands.Cog):
             description=f"🔊 **{member}**'s timeout was removed.",
             color=discord.Color.green(),
         )
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     # ---------------- WARN ----------------
     @commands.command(name="warn")
@@ -178,7 +178,7 @@ class Moderation(commands.Cog):
         """Warn a member. Warnings are saved permanently."""
         if not can_act_on(ctx.author, member):
             embed = discord.Embed(description="❌ You can't act on that member.", color=discord.Color.red())
-            return await ctx.reply(embed=embed)
+            return await ctx.send(embed=embed)
 
         count = _add_warning(ctx.guild.id, member.id, ctx.author.id, reason)
 
@@ -191,7 +191,7 @@ class Moderation(commands.Cog):
             description=f"⚠️ **{member}** has been warned.\n**Reason:** {reason}\n**Total warnings:** {count}",
             color=discord.Color.orange(),
         )
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(name="warnings", aliases=["warns"])
     @has_mod_role()
@@ -217,7 +217,7 @@ class Moderation(commands.Cog):
                     inline=False,
                 )
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(name="clearwarnings", aliases=["clearwarns"])
     @has_mod_role()
@@ -229,7 +229,7 @@ class Moderation(commands.Cog):
             description=f"🗑️ Cleared all warnings for **{member}**.",
             color=discord.Color.green(),
         )
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     # ---------------- CLEAR / PURGE ----------------
     @commands.command(name="clear", aliases=["purge"])
@@ -240,7 +240,7 @@ class Moderation(commands.Cog):
         """Bulk-delete a number of recent messages (max 100)."""
         if amount <= 0 or amount > 100:
             embed = discord.Embed(description="❌ Amount must be between 1 and 100.", color=discord.Color.red())
-            return await ctx.reply(embed=embed)
+            return await ctx.send(embed=embed)
 
         deleted = await ctx.channel.purge(limit=amount + 1)  # +1 to include the command message itself
 
@@ -260,7 +260,7 @@ class Moderation(commands.Cog):
         """Set slowmode for the current channel (0 to disable, max 21600)."""
         if seconds < 0 or seconds > 21600:
             embed = discord.Embed(description="❌ Seconds must be between 0 and 21600 (6 hours).", color=discord.Color.red())
-            return await ctx.reply(embed=embed)
+            return await ctx.send(embed=embed)
 
         await ctx.channel.edit(slowmode_delay=seconds)
 
@@ -268,7 +268,7 @@ class Moderation(commands.Cog):
             embed = discord.Embed(description="✅ Slowmode disabled for this channel.", color=discord.Color.green())
         else:
             embed = discord.Embed(description=f"🐌 Slowmode set to **{seconds} second(s)**.", color=discord.Color.blurple())
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
 
 async def setup(bot: commands.Bot):

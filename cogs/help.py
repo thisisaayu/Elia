@@ -81,7 +81,7 @@ class Help(commands.Cog):
         """Show the interactive help menu."""
         embed = build_home_embed(self.bot)
         view = HelpView(self.bot, ctx.author.id)
-        await ctx.reply(embed=embed, view=view)
+        await ctx.send(embed=embed, view=view)
 
 
 async def setup(bot: commands.Bot):

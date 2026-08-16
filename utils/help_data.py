@@ -46,4 +46,33 @@ MODULES = {
             ("modrole", "Show the currently configured mod role."),
         ],
     },
+    "AutoMod": {
+        "emoji": "🛡️",
+        "description": "Automatic spam/mention/word/link/caps filtering. Requires Administrator.",
+        "commands": [
+            ("automod", "Show current automod configuration."),
+            ("automod toggle <on/off>", "Turn automod on or off entirely."),
+            ("automod feature <spam/mentions/words/invites/caps> <on/off>", "Toggle a specific feature."),
+            ("automod addword <word>", "Add a word to the banned words list."),
+            ("automod removeword <word>", "Remove a word from the banned words list."),
+            ("automod wordlist", "Show the banned words list."),
+            ("automod logchannel [#channel]", "Set or clear the automod log channel."),
+            ("automod ignorechannel <#channel>", "Toggle ignoring a channel."),
+            ("automod spamsettings <limit> <seconds> <punishment> [minutes]", "Configure anti-spam."),
+            ("automod mentionsettings <limit> <punishment> [minutes]", "Configure mass-mention detection."),
+            ("automod capssettings <percent> [min_length]", "Configure excessive caps detection."),
+        ],
+    },
+    "Lockdown": {
+        "emoji": "🔒",
+        "description": "Lock/hide channels. Requires the configured mod role.",
+        "commands": [
+            ("lock [#channel]", "Stop @everyone from sending messages in a channel."),
+            ("unlock [#channel]", "Restore a channel's previous send permissions."),
+            ("hide [#channel]", "Hide a channel from @everyone."),
+            ("unhide [#channel]", "Restore a channel's previous visibility."),
+            ("lockdown [lockall]", "Lock every text channel in the server."),
+            ("unlockdown [unlockall]", "Unlock every text channel in the server."),
+        ],
+    },
 }
