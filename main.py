@@ -36,6 +36,8 @@ bot = commands.Bot(command_prefix=PREFIX, intents=intents, help_command=None)
 INITIAL_COGS = [
     "cogs.core",
     "cogs.information",
+    "cogs.config",
+    "cogs.moderation",
 ]
 
 

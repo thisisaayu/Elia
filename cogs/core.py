@@ -51,6 +51,27 @@ class Core(commands.Cog):
             ),
             inline=False,
         )
+        embed.add_field(
+            name="Moderation (mod role required)",
+            value=(
+                "`kick @user [reason]`\n"
+                "`ban @user [reason]`\n"
+                "`unban <user_id> [reason]`\n"
+                "`timeout @user <minutes> [reason]`\n"
+                "`untimeout @user [reason]`\n"
+                "`warn @user [reason]`\n"
+                "`warnings @user`\n"
+                "`clearwarnings @user`\n"
+                "`clear <amount>`\n"
+                "`slowmode <seconds>`"
+            ),
+            inline=False,
+        )
+        embed.add_field(
+            name="Config (admin only)",
+            value="`setmodrole @role`\n`modrole` — show current mod role",
+            inline=False,
+        )
         embed.set_footer(text="More commands coming soon as features are added.")
         await ctx.reply(embed=embed)
 
