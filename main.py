@@ -38,6 +38,7 @@ INITIAL_COGS = [
     "cogs.information",
     "cogs.config",
     "cogs.moderation",
+    "cogs.help",
 ]
 
 

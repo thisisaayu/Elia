@@ -28,52 +28,8 @@ class Core(commands.Cog):
 
         await message.edit(content=None, embed=embed)
 
-    @commands.command(name="help")
-    async def help_command(self, ctx: commands.Context):
-        """Show available commands."""
-        embed = discord.Embed(
-            title="📖 Help",
-            description=f"Prefix: `{self.bot.command_prefix}`",
-            color=discord.Color.blurple(),
-        )
-        embed.add_field(
-            name="Core",
-            value="`ping` — check bot latency\n`help` — show this message",
-            inline=False,
-        )
-        embed.add_field(
-            name="Information",
-            value=(
-                "`serverinfo` — server stats\n"
-                "`userinfo [@user]` — user stats\n"
-                "`avatar [@user]` — show an avatar\n"
-                "`botinfo` — bot stats"
-            ),
-            inline=False,
-        )
-        embed.add_field(
-            name="Moderation (mod role required)",
-            value=(
-                "`kick @user [reason]`\n"
-                "`ban @user [reason]`\n"
-                "`unban <user_id> [reason]`\n"
-                "`timeout @user <minutes> [reason]`\n"
-                "`untimeout @user [reason]`\n"
-                "`warn @user [reason]`\n"
-                "`warnings @user`\n"
-                "`clearwarnings @user`\n"
-                "`clear <amount>`\n"
-                "`slowmode <seconds>`"
-            ),
-            inline=False,
-        )
-        embed.add_field(
-            name="Config (admin only)",
-            value="`setmodrole @role`\n`modrole` — show current mod role",
-            inline=False,
-        )
-        embed.set_footer(text="More commands coming soon as features are added.")
-        await ctx.reply(embed=embed)
+
+
 
 
 async def setup(bot: commands.Bot):
