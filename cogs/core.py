@@ -41,6 +41,16 @@ class Core(commands.Cog):
             value="`ping` — check bot latency\n`help` — show this message",
             inline=False,
         )
+        embed.add_field(
+            name="Information",
+            value=(
+                "`serverinfo` — server stats\n"
+                "`userinfo [@user]` — user stats\n"
+                "`avatar [@user]` — show an avatar\n"
+                "`botinfo` — bot stats"
+            ),
+            inline=False,
+        )
         embed.set_footer(text="More commands coming soon as features are added.")
         await ctx.reply(embed=embed)
 
