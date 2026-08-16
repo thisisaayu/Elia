@@ -34,7 +34,7 @@ MODULES = {
             ("warn <@user> [reason]", "Warn a member (saved permanently)."),
             ("warnings [warns] <@user>", "View a member's warnings."),
             ("clearwarnings [clearwarns] <@user>", "Clear a member's warnings."),
-            ("clear [purge] <amount>", "Bulk delete recent messages."),
+            ("purge [c, clear] <amount>", "Bulk delete recent messages."),
             ("slowmode <seconds>", "Set channel slowmode."),
         ],
     },

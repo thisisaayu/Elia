@@ -232,12 +232,15 @@ class Moderation(commands.Cog):
         await ctx.send(embed=embed)
 
     # ---------------- CLEAR / PURGE ----------------
-    @commands.command(name="clear", aliases=["purge"])
+    @commands.command(name="purge", aliases=["c", "clear"])
     @has_mod_role()
     @commands.guild_only()
     @commands.bot_has_permissions(manage_messages=True)
-    async def clear(self, ctx: commands.Context, amount: int):
-        """Bulk-delete a number of recent messages (max 100)."""
+    async def purge(self, ctx: commands.Context, amount: int = None):
+        """Bulk-delete a number of recent messages (max 100). Does nothing if no amount is given."""
+        if amount is None:
+            return  # no number given — silently do nothing
+
         if amount <= 0 or amount > 100:
             embed = discord.Embed(description="❌ Amount must be between 1 and 100.", color=discord.Color.red())
             return await ctx.send(embed=embed)
