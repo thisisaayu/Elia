@@ -40,6 +40,7 @@ INITIAL_COGS = [
     "cogs.moderation",
     "cogs.automod",
     "cogs.lockdown",
+    "cogs.fun",
     "cogs.help",
 ]
 

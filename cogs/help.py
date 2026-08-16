@@ -76,7 +76,7 @@ class Help(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.command(name="help")
+    @commands.command(name="help", aliases=["h"])
     async def help_command(self, ctx: commands.Context):
         """Show the interactive help menu."""
         embed = build_home_embed(self.bot)

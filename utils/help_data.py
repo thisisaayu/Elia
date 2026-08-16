@@ -75,4 +75,20 @@ MODULES = {
             ("unlockdown [unlockall]", "Unlock every text channel in the server."),
         ],
     },
+    "Fun": {
+        "emoji": "🎉",
+        "description": "Fun and entertainment commands.",
+        "commands": [
+            ("8ball <question>", "Ask the magic 8-ball."),
+            ("coinflip [flip, coin]", "Flip a coin."),
+            ("roll [dice] <NdM>", "Roll dice, e.g. 2d20."),
+            ("rps <rock/paper/scissors>", "Play rock-paper-scissors."),
+            ("choose [pick] <a, b, c>", "Pick between options."),
+            ("ship <@user1> [@user2]", "Ship two users together."),
+            ("joke", "Get a random joke."),
+            ("fact", "Get a random fun fact."),
+            ("wyr [wouldyourather]", "Get a random 'would you rather'."),
+            ("hug/pat/slap [@user]", "Interact with someone."),
+        ],
+    },
 }
