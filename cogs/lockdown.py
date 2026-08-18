@@ -3,6 +3,7 @@ from discord.ext import commands
 
 from utils import storage
 from utils.checks import has_mod_role
+from utils import colors
 
 LOCKDOWN_FILE = "lockdown.json"
 
@@ -164,7 +165,7 @@ class Lockdown(commands.Cog):
         """Unlock every text channel in the server."""
         everyone = ctx.guild.default_role
         count = 0
-        msg = await ctx.send(embed=discord.Embed(description="🔓 Lifting lockdown...", color=discord.Color.blurple()))
+        msg = await ctx.send(embed=discord.Embed(description="🔓 Lifting lockdown...", color=colors.EMBED_COLOR))
         for channel in ctx.guild.text_channels:
             try:
                 if await self._unlock_channel(channel, everyone):

@@ -4,6 +4,7 @@ import random
 import aiohttp
 import discord
 from discord.ext import commands
+from utils import colors
 
 # nekos.best is a free, no-key-required API for anime reaction gifs.
 # Each entry: command name -> (API action, caption template using {a} = author, {t} = target)
@@ -26,9 +27,9 @@ GIF_ACTIONS = {
 BEATDOWN_ACTIONS = ["punch", "slap", "kick", "bite"]
 BEATDOWN_CAPTIONS = [
     "💥 **{a}** absolutely wrecks **{t}**! Bet you thought this was gonna be something else...",
-    "💀 **{a}** i guess...",
-    "🥊 **{a}** good lord **{t}**! G",
-    "⚡ **{a}** delivers a devastating combo to **{t}**!",
+    "💀 **{a}** just ended **{t}**'s whole career. Nothing sexual about it.",
+    "🥊 **{a}** unleashes pure violence on **{t}**! Get your mind out of the gutter.",
+    "⚡ **{a}** delivers a devastating combo to **{t}**! That's the only kind of action you're getting here.",
 ]
 
 EIGHTBALL_RESPONSES = [
@@ -123,7 +124,7 @@ class Fun(commands.Cog):
             return await ctx.send(embed=embed)
 
         answer = random.choice(EIGHTBALL_RESPONSES)
-        embed = discord.Embed(title="🎱 Magic 8-Ball", color=discord.Color.blurple())
+        embed = discord.Embed(title="🎱 Magic 8-Ball", color=colors.EMBED_COLOR)
         embed.add_field(name="Question", value=question, inline=False)
         embed.add_field(name="Answer", value=answer, inline=False)
         await ctx.send(embed=embed)
@@ -133,7 +134,7 @@ class Fun(commands.Cog):
         """Flip a coin."""
         result = random.choice(["Heads", "Tails"])
         emoji = "🪙"
-        embed = discord.Embed(description=f"{emoji} The coin landed on **{result}**!", color=discord.Color.blurple())
+        embed = discord.Embed(description=f"{emoji} The coin landed on **{result}**!", color=colors.EMBED_COLOR)
         await ctx.send(embed=embed)
 
     @commands.command(name="roll", aliases=["dice"])
@@ -151,7 +152,7 @@ class Fun(commands.Cog):
             return await ctx.send(embed=embed)
 
         rolls = [random.randint(1, sides) for _ in range(num)]
-        embed = discord.Embed(title="🎲 Dice Roll", color=discord.Color.blurple())
+        embed = discord.Embed(title="🎲 Dice Roll", color=colors.EMBED_COLOR)
         embed.add_field(name="Rolls", value=", ".join(str(r) for r in rolls), inline=False)
         embed.add_field(name="Total", value=str(sum(rolls)), inline=False)
         await ctx.send(embed=embed)
@@ -195,7 +196,7 @@ class Fun(commands.Cog):
             return await ctx.send(embed=embed)
 
         pick = random.choice(choices)
-        embed = discord.Embed(description=f"🤔 I choose... **{pick}**", color=discord.Color.blurple())
+        embed = discord.Embed(description=f"🤔 I choose... **{pick}**", color=colors.EMBED_COLOR)
         await ctx.send(embed=embed)
 
     @commands.command(name="ship")
@@ -219,19 +220,19 @@ class Fun(commands.Cog):
     @commands.command(name="joke")
     async def joke(self, ctx: commands.Context):
         """Get a random joke."""
-        embed = discord.Embed(description=f"😄 {random.choice(JOKES)}", color=discord.Color.blurple())
+        embed = discord.Embed(description=f"😄 {random.choice(JOKES)}", color=colors.EMBED_COLOR)
         await ctx.send(embed=embed)
 
     @commands.command(name="fact")
     async def fact(self, ctx: commands.Context):
         """Get a random fun fact."""
-        embed = discord.Embed(description=f"🧠 {random.choice(FACTS)}", color=discord.Color.blurple())
+        embed = discord.Embed(description=f"🧠 {random.choice(FACTS)}", color=colors.EMBED_COLOR)
         await ctx.send(embed=embed)
 
     @commands.command(name="wyr", aliases=["wouldyourather"])
     async def wyr(self, ctx: commands.Context):
         """Get a random 'would you rather' question."""
-        embed = discord.Embed(title="🤔 Would You Rather", description=random.choice(WYR_QUESTIONS), color=discord.Color.blurple())
+        embed = discord.Embed(title="🤔 Would You Rather", description=random.choice(WYR_QUESTIONS), color=colors.EMBED_COLOR)
         await ctx.send(embed=embed)
 
     # ---------------- Interaction commands (with anime reaction GIFs) ----------------
@@ -242,7 +243,7 @@ class Fun(commands.Cog):
 
         gif_url = await self._fetch_gif(action)
 
-        embed = discord.Embed(description=caption, color=discord.Color.blurple())
+        embed = discord.Embed(description=caption, color=colors.EMBED_COLOR)
         if gif_url:
             embed.set_image(url=gif_url)
         else:

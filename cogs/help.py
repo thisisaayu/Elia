@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 from utils.help_data import MODULES
+from utils import colors
 
 
 def build_home_embed(bot: commands.Bot) -> discord.Embed:
@@ -14,7 +15,7 @@ def build_home_embed(bot: commands.Bot) -> discord.Embed:
             "Use the dropdown below to browse a module's commands.\n"
             "`<>` = required argument, `[]` = optional argument."
         ),
-        color=discord.Color.blurple(),
+        color=colors.EMBED_COLOR,
     )
     embed.set_thumbnail(url=bot.user.display_avatar.url)
     return embed
@@ -25,7 +26,7 @@ def build_module_embed(bot: commands.Bot, module_name: str) -> discord.Embed:
     embed = discord.Embed(
         title=f"{module['emoji']} {module_name}",
         description=module["description"],
-        color=discord.Color.blurple(),
+        color=colors.EMBED_COLOR,
     )
     for name, desc in module["commands"]:
         embed.add_field(name=f"`{bot.command_prefix}{name}`", value=desc, inline=False)

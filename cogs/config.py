@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 from utils import storage
+from utils import colors
 
 CONFIG_FILE = "guild_config.json"
 
@@ -64,7 +65,7 @@ class Config(commands.Cog):
 
         embed = discord.Embed(
             description=f"Current mod role: {role.mention}",
-            color=discord.Color.blurple(),
+            color=colors.EMBED_COLOR,
         )
         await ctx.send(embed=embed)
 

@@ -7,6 +7,7 @@ from discord.ext import commands
 
 from utils import storage
 from utils.checks import is_staff
+from utils import colors
 
 AUTOMOD_FILE = "automod.json"
 
@@ -188,7 +189,7 @@ class AutoModConfig(commands.Cog, name="AutoMod Config"):
     async def automod(self, ctx: commands.Context):
         """Show current automod configuration."""
         config = get_config(ctx.guild.id)
-        embed = discord.Embed(title="🛡️ AutoMod Configuration", color=discord.Color.blurple())
+        embed = discord.Embed(title="🛡️ AutoMod Configuration", color=colors.EMBED_COLOR)
         embed.add_field(name="Enabled", value="✅ Yes" if config["enabled"] else "❌ No", inline=False)
         embed.add_field(
             name="Anti-Spam",
@@ -279,7 +280,7 @@ class AutoModConfig(commands.Cog, name="AutoMod Config"):
         config = get_config(ctx.guild.id)
         words = config["banned_words"]["words"]
         desc = ", ".join(f"`{w}`" for w in words) if words else "No banned words set."
-        await ctx.send(embed=discord.Embed(title="Banned Words", description=desc, color=discord.Color.blurple()))
+        await ctx.send(embed=discord.Embed(title="Banned Words", description=desc, color=colors.EMBED_COLOR))
 
     @automod.command(name="logchannel")
     @commands.has_permissions(administrator=True)

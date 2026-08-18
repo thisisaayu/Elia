@@ -1,6 +1,7 @@
 import time
 import discord
 from discord.ext import commands
+from utils import colors
 
 
 class Core(commands.Cog):
@@ -21,7 +22,7 @@ class Core(commands.Cog):
 
         embed = discord.Embed(
             title="🏓 Pong!",
-            color=discord.Color.blurple(),
+            color=colors.EMBED_COLOR,
         )
         embed.add_field(name="Websocket", value=f"{api_latency}ms", inline=True)
         embed.add_field(name="Round-trip", value=f"{round_trip}ms", inline=True)

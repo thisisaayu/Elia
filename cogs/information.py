@@ -3,6 +3,7 @@ import time
 
 import discord
 from discord.ext import commands
+from utils import colors
 
 
 class Information(commands.Cog):
@@ -26,7 +27,7 @@ class Information(commands.Cog):
 
         embed = discord.Embed(
             title=guild.name,
-            color=discord.Color.blurple(),
+            color=colors.EMBED_COLOR,
             timestamp=discord.utils.utcnow(),
         )
         if guild.icon:
@@ -61,7 +62,7 @@ class Information(commands.Cog):
 
         embed = discord.Embed(
             title=str(member),
-            color=member.color if member.color.value != 0 else discord.Color.blurple(),
+            color=member.color if member.color.value != 0 else colors.EMBED_COLOR,
             timestamp=discord.utils.utcnow(),
         )
         embed.set_thumbnail(url=member.display_avatar.url)
@@ -96,7 +97,7 @@ class Information(commands.Cog):
 
         embed = discord.Embed(
             title=f"{member}'s Avatar",
-            color=discord.Color.blurple(),
+            color=colors.EMBED_COLOR,
         )
         embed.set_image(url=member.display_avatar.url)
         embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.display_avatar.url)
@@ -116,7 +117,7 @@ class Information(commands.Cog):
 
         embed = discord.Embed(
             title=f"{self.bot.user.name} — Bot Info",
-            color=discord.Color.blurple(),
+            color=colors.EMBED_COLOR,
             timestamp=discord.utils.utcnow(),
         )
         embed.set_thumbnail(url=self.bot.user.display_avatar.url)

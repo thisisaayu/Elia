@@ -6,6 +6,7 @@ from discord.ext import commands
 
 from utils import storage
 from utils.checks import has_mod_role, can_act_on
+from utils import colors
 
 WARNINGS_FILE = "warnings.json"
 
@@ -202,7 +203,7 @@ class Moderation(commands.Cog):
 
         embed = discord.Embed(
             title=f"Warnings for {member}",
-            color=discord.Color.blurple(),
+            color=colors.EMBED_COLOR,
         )
         if not warns:
             embed.description = "No warnings on record."
@@ -270,7 +271,7 @@ class Moderation(commands.Cog):
         if seconds == 0:
             embed = discord.Embed(description="✅ Slowmode disabled for this channel.", color=discord.Color.green())
         else:
-            embed = discord.Embed(description=f"🐌 Slowmode set to **{seconds} second(s)**.", color=discord.Color.blurple())
+            embed = discord.Embed(description=f"🐌 Slowmode set to **{seconds} second(s)**.", color=colors.EMBED_COLOR)
         await ctx.send(embed=embed)
 
 

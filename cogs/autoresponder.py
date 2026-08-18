@@ -3,6 +3,7 @@ from discord.ext import commands
 
 from utils import storage
 from utils.checks import has_mod_role
+from utils import colors
 
 AUTORESPONDER_FILE = "autoresponders.json"
 MAX_RESPONDERS_PER_GUILD = 50
@@ -91,7 +92,7 @@ class AutoResponder(commands.Cog):
 
         embed = discord.Embed(
             title="💬 Autoresponders",
-            color=discord.Color.blurple(),
+            color=colors.EMBED_COLOR,
         )
         embed.add_field(name="Status", value="✅ Enabled" if settings["enabled"] else "❌ Disabled", inline=False)
 
