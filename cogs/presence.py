@@ -24,7 +24,7 @@ class Presence(commands.Cog):
         return [
             discord.Streaming(name=f"{prefix}help", url=STREAM_URL),
             discord.Activity(type=discord.ActivityType.competing, name=f"{prefix}ping"),
-            discord.Activity(type=discord.ActivityType.watching, name=f"{prefix}Revenge of the Sith"),
+            discord.Activity(type=discord.ActivityType.watching, name=f"Revenge of the Sith"),
             discord.Game(name=f"{prefix}help"),
             discord.Activity(type=discord.ActivityType.listening, name="duel of the fates"),
         ]
