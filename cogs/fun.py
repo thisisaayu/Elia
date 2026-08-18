@@ -88,7 +88,10 @@ class Fun(commands.Cog):
         self.session: aiohttp.ClientSession | None = None
 
     async def cog_load(self):
-        self.session = aiohttp.ClientSession()
+        # nekos.best requires a specific, non-default User-Agent header on every request —
+        # it blocks generic/library-default agents like plain "aiohttp/x.x".
+        headers = {"User-Agent": "EliaBot (https://github.com/thisisaayu/Elia)"}
+        self.session = aiohttp.ClientSession(headers=headers)
 
     async def cog_unload(self):
         if self.session:
@@ -96,16 +99,20 @@ class Fun(commands.Cog):
 
     async def _fetch_gif(self, action: str) -> str | None:
         """Fetch a random gif URL for the given nekos.best action. Returns None on failure."""
+        import logging
+        log = logging.getLogger("bot")
         try:
             async with self.session.get(f"https://nekos.best/api/v2/{action}") as resp:
                 if resp.status != 200:
+                    log.warning(f"nekos.best returned {resp.status} for action '{action}'")
                     return None
                 data = await resp.json()
                 results = data.get("results")
                 if not results:
                     return None
                 return results[0].get("url")
-        except (aiohttp.ClientError, TimeoutError):
+        except (aiohttp.ClientError, TimeoutError) as e:
+            log.warning(f"nekos.best fetch failed for action '{action}': {e}")
             return None
 
     @commands.command(name="8ball")
