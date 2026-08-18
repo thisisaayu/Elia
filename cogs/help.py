@@ -8,7 +8,7 @@ from utils import colors
 def build_home_embed(bot: commands.Bot) -> discord.Embed:
     total_commands = sum(len(m["commands"]) for m in MODULES.values())
     embed = discord.Embed(
-        title=f"{bot.user.name} — Help",
+        title=f"@{bot.user.name} | Help",
         description=(
             f"Prefix: `{bot.command_prefix}`\n"
             f"{len(MODULES)} modules • {total_commands} commands\n\n"
