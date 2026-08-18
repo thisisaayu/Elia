@@ -160,6 +160,10 @@ class AutoMod(commands.Cog):
             log.append(now)
             recent = [t for t in log if now - t <= sp["seconds"]]
             if len(recent) >= sp["message_limit"]:
+                try:
+                    await message.delete()
+                except (discord.Forbidden, discord.NotFound):
+                    pass
                 await self.punish(
                     message.author, sp["punishment"], sp["duration_minutes"],
                     reason="Automod: spam",
@@ -169,6 +173,7 @@ class AutoMod(commands.Cog):
                     f"💨 {message.author.mention} was punished for spam (`{sp['punishment']}`)",
                 )
                 log.clear()
+
 
 
 class AutoModConfig(commands.Cog, name="AutoMod Config"):
