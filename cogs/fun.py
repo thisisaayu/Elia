@@ -26,9 +26,9 @@ GIF_ACTIONS = {
 BEATDOWN_ACTIONS = ["punch", "slap", "kick", "bite"]
 BEATDOWN_CAPTIONS = [
     "💥 **{a}** absolutely wrecks **{t}**! Bet you thought this was gonna be something else...",
-    "💀 **{a}** just ended **{t}**'s whole career. Nothing sexual about it.",
-    "🥊 **{a}** unleashes pure violence on **{t}**! Get your mind out of the gutter.",
-    "⚡ **{a}** delivers a devastating combo to **{t}**! That's the only kind of action you're getting here.",
+    "💀 **{a}** i guess...",
+    "🥊 **{a}** good lord **{t}**! G",
+    "⚡ **{a}** delivers a devastating combo to **{t}**!",
 ]
 
 EIGHTBALL_RESPONSES = [
