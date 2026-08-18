@@ -1,8 +1,35 @@
 import hashlib
 import random
 
+import aiohttp
 import discord
 from discord.ext import commands
+
+# nekos.best is a free, no-key-required API for anime reaction gifs.
+# Each entry: command name -> (API action, caption template using {a} = author, {t} = target)
+GIF_ACTIONS = {
+    "hug":      ("hug",      "🤗 **{a}** hugs **{t}**!"),
+    "pat":      ("pat",      "🖐️ **{a}** pats **{t}**!"),
+    "slap":     ("slap",     "👋 **{a}** slaps **{t}**! That looks like it hurt..."),
+    "kiss":     ("kiss",     "😘 **{a}** kisses **{t}**!"),
+    "cuddle":   ("cuddle",   "🥰 **{a}** cuddles up with **{t}**!"),
+    "poke":     ("poke",     "👉 **{a}** pokes **{t}**!"),
+    "tickle":   ("tickle",   "🤭 **{a}** tickles **{t}**!"),
+    "punch":    ("punch",    "👊 **{a}** punches **{t}**!"),
+    "bite":     ("bite",     "😬 **{a}** bites **{t}**!"),
+    "highfive": ("highfive", "🙌 **{a}** high-fives **{t}**!"),
+    "wave":     ("wave",     "👋 **{a}** waves at **{t}**!"),
+    "feed":     ("feed",     "🍽️ **{a}** feeds **{t}**!"),
+}
+
+# Actions used for the ,fuck joke command — subverts expectations with a comedic beatdown instead
+BEATDOWN_ACTIONS = ["punch", "slap", "kick", "bite"]
+BEATDOWN_CAPTIONS = [
+    "💥 **{a}** absolutely wrecks **{t}**! Bet you thought this was gonna be something else...",
+    "💀 **{a}** just ended **{t}**'s whole career. Nothing sexual about it.",
+    "🥊 **{a}** unleashes pure violence on **{t}**! Get your mind out of the gutter.",
+    "⚡ **{a}** delivers a devastating combo to **{t}**! That's the only kind of action you're getting here.",
+]
 
 EIGHTBALL_RESPONSES = [
     "It is certain.", "Without a doubt.", "Yes, definitely.", "You may rely on it.",
@@ -58,6 +85,28 @@ class Fun(commands.Cog):
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+        self.session: aiohttp.ClientSession | None = None
+
+    async def cog_load(self):
+        self.session = aiohttp.ClientSession()
+
+    async def cog_unload(self):
+        if self.session:
+            await self.session.close()
+
+    async def _fetch_gif(self, action: str) -> str | None:
+        """Fetch a random gif URL for the given nekos.best action. Returns None on failure."""
+        try:
+            async with self.session.get(f"https://nekos.best/api/v2/{action}") as resp:
+                if resp.status != 200:
+                    return None
+                data = await resp.json()
+                results = data.get("results")
+                if not results:
+                    return None
+                return results[0].get("url")
+        except (aiohttp.ClientError, TimeoutError):
+            return None
 
     @commands.command(name="8ball")
     async def eightball(self, ctx: commands.Context, *, question: str = None):
@@ -178,26 +227,95 @@ class Fun(commands.Cog):
         embed = discord.Embed(title="🤔 Would You Rather", description=random.choice(WYR_QUESTIONS), color=discord.Color.blurple())
         await ctx.send(embed=embed)
 
-    # ---------------- Interaction commands ----------------
+    # ---------------- Interaction commands (with anime reaction GIFs) ----------------
+    async def _send_interaction(self, ctx: commands.Context, action: str, member: discord.Member = None):
+        member = member or ctx.author
+        _, template = GIF_ACTIONS[action]
+        caption = template.format(a=ctx.author.display_name, t=member.display_name)
+
+        gif_url = await self._fetch_gif(action)
+
+        embed = discord.Embed(description=caption, color=discord.Color.blurple())
+        if gif_url:
+            embed.set_image(url=gif_url)
+        else:
+            embed.set_footer(text="(couldn't load a gif right now)")
+        await ctx.send(embed=embed)
+
     @commands.command(name="hug")
     async def hug(self, ctx: commands.Context, member: discord.Member = None):
         """Hug someone."""
-        member = member or ctx.author
-        embed = discord.Embed(description=f"🤗 **{ctx.author.display_name}** hugs **{member.display_name}**!", color=discord.Color.blurple())
-        await ctx.send(embed=embed)
+        await self._send_interaction(ctx, "hug", member)
 
     @commands.command(name="pat")
     async def pat(self, ctx: commands.Context, member: discord.Member = None):
         """Pat someone."""
-        member = member or ctx.author
-        embed = discord.Embed(description=f"🖐️ **{ctx.author.display_name}** pats **{member.display_name}**!", color=discord.Color.blurple())
-        await ctx.send(embed=embed)
+        await self._send_interaction(ctx, "pat", member)
 
     @commands.command(name="slap")
     async def slap(self, ctx: commands.Context, member: discord.Member = None):
         """Slap someone (playfully)."""
+        await self._send_interaction(ctx, "slap", member)
+
+    @commands.command(name="kiss")
+    async def kiss(self, ctx: commands.Context, member: discord.Member = None):
+        """Kiss someone."""
+        await self._send_interaction(ctx, "kiss", member)
+
+    @commands.command(name="cuddle")
+    async def cuddle(self, ctx: commands.Context, member: discord.Member = None):
+        """Cuddle someone."""
+        await self._send_interaction(ctx, "cuddle", member)
+
+    @commands.command(name="poke")
+    async def poke(self, ctx: commands.Context, member: discord.Member = None):
+        """Poke someone."""
+        await self._send_interaction(ctx, "poke", member)
+
+    @commands.command(name="tickle")
+    async def tickle(self, ctx: commands.Context, member: discord.Member = None):
+        """Tickle someone."""
+        await self._send_interaction(ctx, "tickle", member)
+
+    @commands.command(name="punch")
+    async def punch(self, ctx: commands.Context, member: discord.Member = None):
+        """Punch someone (playfully)."""
+        await self._send_interaction(ctx, "punch", member)
+
+    @commands.command(name="bite")
+    async def bite(self, ctx: commands.Context, member: discord.Member = None):
+        """Bite someone."""
+        await self._send_interaction(ctx, "bite", member)
+
+    @commands.command(name="highfive")
+    async def highfive(self, ctx: commands.Context, member: discord.Member = None):
+        """High-five someone."""
+        await self._send_interaction(ctx, "highfive", member)
+
+    @commands.command(name="wave")
+    async def wave(self, ctx: commands.Context, member: discord.Member = None):
+        """Wave at someone."""
+        await self._send_interaction(ctx, "wave", member)
+
+    @commands.command(name="feed")
+    async def feed(self, ctx: commands.Context, member: discord.Member = None):
+        """Feed someone."""
+        await self._send_interaction(ctx, "feed", member)
+
+    @commands.command(name="fuck")
+    async def fuck(self, ctx: commands.Context, member: discord.Member = None):
+        """Not what you think. 😈"""
         member = member or ctx.author
-        embed = discord.Embed(description=f"👋 **{ctx.author.display_name}** slaps **{member.display_name}**!", color=discord.Color.blurple())
+        action = random.choice(BEATDOWN_ACTIONS)
+        caption = random.choice(BEATDOWN_CAPTIONS).format(a=ctx.author.display_name, t=member.display_name)
+
+        gif_url = await self._fetch_gif(action)
+
+        embed = discord.Embed(description=caption, color=discord.Color.dark_red())
+        if gif_url:
+            embed.set_image(url=gif_url)
+        else:
+            embed.set_footer(text="(couldn't load a gif right now)")
         await ctx.send(embed=embed)
 
 

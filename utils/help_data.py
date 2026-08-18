@@ -99,7 +99,10 @@ MODULES = {
             ("joke", "Get a random joke."),
             ("fact", "Get a random fun fact."),
             ("wyr [wouldyourather]", "Get a random 'would you rather'."),
-            ("hug/pat/slap [@user]", "Interact with someone."),
+            ("hug/pat/slap/kiss/cuddle [@user]", "Anime reaction gif interactions."),
+            ("poke/tickle/punch/bite [@user]", "More reaction gif interactions."),
+            ("highfive/wave/feed [@user]", "Even more reaction gif interactions."),
+            ("fuck [@user]", "Not what you think — a comedic beatdown gif instead."),
         ],
     },
 }
