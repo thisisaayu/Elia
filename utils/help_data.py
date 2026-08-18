@@ -75,6 +75,17 @@ MODULES = {
             ("unlockdown [unlockall]", "Unlock every text channel in the server."),
         ],
     },
+    "AutoResponder": {
+        "emoji": "💬",
+        "description": "Custom trigger → response messages. Requires the configured mod role to manage.",
+        "commands": [
+            ("autoresponder [ar]", "List all autoresponders for this server."),
+            ("autoresponder add [ar add] <trigger> | <response>", "Add a new trigger. Placeholders: {user} {username} {server} {channel}"),
+            ("autoresponder remove [ar remove] <trigger>", "Remove a trigger."),
+            ("autoresponder clear [ar clear]", "Remove all triggers."),
+            ("autoresponder toggle [ar toggle] <on/off>", "Enable or disable autoresponders."),
+        ],
+    },
     "Fun": {
         "emoji": "🎉",
         "description": "Fun and entertainment commands.",
