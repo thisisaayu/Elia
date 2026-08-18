@@ -42,6 +42,7 @@ INITIAL_COGS = [
     "cogs.lockdown",
     "cogs.autoresponder",
     "cogs.fun",
+    "cogs.presence",
     "cogs.help",
 ]
 
@@ -51,9 +52,6 @@ async def on_ready():
     log.info(f"Logged in as {bot.user} (ID: {bot.user.id})")
     log.info(f"Prefix: {PREFIX}")
     log.info("------")
-    await bot.change_presence(
-        activity=discord.Game(name=f"{PREFIX}help")
-    )
 
 
 async def load_cogs():
