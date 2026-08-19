@@ -41,7 +41,12 @@ INITIAL_COGS = [
     "cogs.automod",
     "cogs.lockdown",
     "cogs.autoresponder",
+    "cogs.reactionroles",
+    "cogs.embedbuilder",
+    "cogs.snipe",
+    "cogs.logs",
     "cogs.fun",
+    "cogs.economy",
     "cogs.presence",
     "cogs.help",
 ]

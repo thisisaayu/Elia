@@ -86,6 +86,40 @@ MODULES = {
             ("autoresponder toggle [ar toggle] <on/off>", "Enable or disable autoresponders."),
         ],
     },
+    "Reaction Roles": {
+        "emoji": "🎭",
+        "description": "React to a message to get a role. Setup requires Administrator.",
+        "commands": [
+            ("reactionrole [rr]", "List all reaction role setups in this server."),
+            ("reactionrole add [rr add] <message_id> <emoji> <@role>", "Link an emoji reaction to a role (run in the message's channel)."),
+            ("reactionrole remove [rr remove] <message_id> <emoji>", "Unlink an emoji from a role."),
+        ],
+    },
+    "Embed Builder": {
+        "emoji": "🖼️",
+        "description": "Build a custom embed with buttons and a live preview. Requires Manage Messages.",
+        "commands": [
+            ("embed [#channel]", "Open the interactive embed builder. Sends to the given channel, or the current one."),
+        ],
+    },
+    "Snipe": {
+        "emoji": "🔍",
+        "description": "Recover recently deleted or edited messages in a channel. Not stored across restarts.",
+        "commands": [
+            ("snipe [s] [index]", "Show a recently deleted message (default: most recent)."),
+            ("editsnipe [es] [index]", "Show a recently edited message, before and after."),
+            ("clearsnipe [cs]", "Clear this channel's snipe history. Requires Manage Messages."),
+        ],
+    },
+    "Logging": {
+        "emoji": "📋",
+        "description": "Log server events (joins, leaves, message edits/deletes, mod actions) to a channel. Requires Administrator.",
+        "commands": [
+            ("logs", "Show the current logging configuration."),
+            ("logs setchannel [#channel]", "Set (or clear) the log channel."),
+            ("logs toggle <event> <on/off>", "Toggle a specific event. Events: join, leave, kick, ban, unban, timeout, message_delete, message_edit, role_update, nickname_update"),
+        ],
+    },
     "Fun": {
         "emoji": "🎉",
         "description": "Fun and entertainment commands.",
@@ -103,6 +137,19 @@ MODULES = {
             ("poke/tickle/punch/bite [@user]", "More reaction gif interactions."),
             ("highfive/wave/feed [@user]", "Even more reaction gif interactions."),
             ("fuck [@user]", "Not what you think — a comedic beatdown gif instead."),
+        ],
+    },
+    "Economy": {
+        "emoji": "💰",
+        "description": "Earn, gamble, and compete with Aurels — the server's virtual currency.",
+        "commands": [
+            ("balance [bal, aurels] [@user]", "Check your (or someone's) balance."),
+            ("daily", "Claim your daily reward (24h cooldown)."),
+            ("work", "Work for quick Aurels (1h cooldown)."),
+            ("pay [give] <@user> <amount>", "Send Aurels to another member."),
+            ("leaderboard [lb]", "Show the top 10 richest members."),
+            ("cf <amount> <heads/tails>", "Bet on a coinflip."),
+            ("slots <amount>", "Play the slot machine."),
         ],
     },
 }
