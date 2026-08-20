@@ -41,6 +41,7 @@ INITIAL_COGS = [
     "cogs.moderation",
     "cogs.automod",
     "cogs.lockdown",
+    "cogs.nuke",
     "cogs.autoresponder",
     "cogs.reactionroles",
     "cogs.embedbuilder",

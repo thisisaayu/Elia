@@ -75,6 +75,13 @@ MODULES = {
             ("unlockdown [unlockall]", "Unlock every text channel in the server."),
         ],
     },
+    "Nuke": {
+        "emoji": "💣",
+        "description": "Clone-and-replace a channel to wipe its message history. Requires the configured mod role.",
+        "commands": [
+            ("nuke [#channel]", "Clone the channel (name, permissions, position, settings) and delete the original. Asks for confirmation first."),
+        ],
+    },
     "AutoResponder": {
         "emoji": "💬",
         "description": "Custom trigger → response messages. Requires the configured mod role to manage.",
