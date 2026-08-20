@@ -145,7 +145,11 @@ MODULES = {
         "commands": [
             ("balance [bal, aurels] [@user]", "Check your (or someone's) balance."),
             ("daily", "Claim your daily reward (24h cooldown)."),
-            ("work", "Work for quick Aurels (1h cooldown)."),
+            ("jobs [joblist]", "See available jobs and their pay ranges."),
+            ("apply <job>", "Apply for a job."),
+            ("resign [quit]", "Quit your current job."),
+            ("myjob [job]", "Show your current job."),
+            ("work", "Work your job for Aurels (1h cooldown, requires a job)."),
             ("pay [give] <@user> <amount>", "Send Aurels to another member."),
             ("leaderboard [lb]", "Show the top 10 richest members."),
             ("cf <amount> <heads/tails>", "Bet on a coinflip."),

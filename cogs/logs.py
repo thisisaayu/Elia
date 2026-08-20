@@ -230,7 +230,7 @@ class Logging(commands.Cog):
         await self._send_log(before.guild, "message_edit", embed)
 
     # ---------------- CONFIG COMMANDS ----------------
-    @commands.group(name="logs", invoke_without_command=True)
+    @commands.hybrid_group(name="logs", invoke_without_command=True)
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
     async def logs(self, ctx: commands.Context):

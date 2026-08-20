@@ -116,7 +116,7 @@ class Fun(commands.Cog):
             log.warning(f"nekos.best fetch failed for action '{action}': {e}")
             return None
 
-    @commands.command(name="8ball")
+    @commands.hybrid_command(name="8ball")
     async def eightball(self, ctx: commands.Context, *, question: str = None):
         """Ask the magic 8-ball a question."""
         if not question:
@@ -129,7 +129,7 @@ class Fun(commands.Cog):
         embed.add_field(name="Answer", value=answer, inline=False)
         await ctx.send(embed=embed)
 
-    @commands.command(name="coinflip", aliases=["flip", "coin"])
+    @commands.hybrid_command(name="coinflip", aliases=["flip", "coin"])
     async def coinflip(self, ctx: commands.Context):
         """Flip a coin."""
         result = random.choice(["Heads", "Tails"])
@@ -137,7 +137,7 @@ class Fun(commands.Cog):
         embed = discord.Embed(description=f"{emoji} The coin landed on **{result}**!", color=colors.EMBED_COLOR)
         await ctx.send(embed=embed)
 
-    @commands.command(name="roll", aliases=["dice"])
+    @commands.hybrid_command(name="roll", aliases=["dice"])
     async def roll(self, ctx: commands.Context, dice: str = "1d6"):
         """Roll dice. Format: NdM (e.g. 2d20 rolls two 20-sided dice)."""
         try:
@@ -157,7 +157,7 @@ class Fun(commands.Cog):
         embed.add_field(name="Total", value=str(sum(rolls)), inline=False)
         await ctx.send(embed=embed)
 
-    @commands.command(name="rps")
+    @commands.hybrid_command(name="rps")
     async def rps(self, ctx: commands.Context, choice: str = None):
         """Play rock-paper-scissors against the bot."""
         if not choice or choice.lower() not in RPS_BEATS:
@@ -183,7 +183,7 @@ class Fun(commands.Cog):
         embed.add_field(name="Result", value=result, inline=False)
         await ctx.send(embed=embed)
 
-    @commands.command(name="choose", aliases=["pick"])
+    @commands.hybrid_command(name="choose", aliases=["pick"])
     async def choose(self, ctx: commands.Context, *, options: str = None):
         """Let the bot choose between options, separated by commas. Example: ,choose pizza, tacos, sushi"""
         if not options or "," not in options:
@@ -199,7 +199,7 @@ class Fun(commands.Cog):
         embed = discord.Embed(description=f"🤔 I choose... **{pick}**", color=colors.EMBED_COLOR)
         await ctx.send(embed=embed)
 
-    @commands.command(name="ship")
+    @commands.hybrid_command(name="ship")
     @commands.guild_only()
     async def ship(self, ctx: commands.Context, user1: discord.Member, user2: discord.Member = None):
         """Ship two users together (compatibility is deterministic per pair, for fun)."""
@@ -217,19 +217,19 @@ class Fun(commands.Cog):
         embed.add_field(name="Compatibility", value=f"{bar_filled}{bar_empty}\n**{percent}%**", inline=False)
         await ctx.send(embed=embed)
 
-    @commands.command(name="joke")
+    @commands.hybrid_command(name="joke")
     async def joke(self, ctx: commands.Context):
         """Get a random joke."""
         embed = discord.Embed(description=f"😄 {random.choice(JOKES)}", color=colors.EMBED_COLOR)
         await ctx.send(embed=embed)
 
-    @commands.command(name="fact")
+    @commands.hybrid_command(name="fact")
     async def fact(self, ctx: commands.Context):
         """Get a random fun fact."""
         embed = discord.Embed(description=f"🧠 {random.choice(FACTS)}", color=colors.EMBED_COLOR)
         await ctx.send(embed=embed)
 
-    @commands.command(name="wyr", aliases=["wouldyourather"])
+    @commands.hybrid_command(name="wyr", aliases=["wouldyourather"])
     async def wyr(self, ctx: commands.Context):
         """Get a random 'would you rather' question."""
         embed = discord.Embed(title="🤔 Would You Rather", description=random.choice(WYR_QUESTIONS), color=colors.EMBED_COLOR)
@@ -250,62 +250,62 @@ class Fun(commands.Cog):
             embed.set_footer(text="(couldn't load a gif right now)")
         await ctx.send(embed=embed)
 
-    @commands.command(name="hug")
+    @commands.hybrid_command(name="hug")
     async def hug(self, ctx: commands.Context, member: discord.Member = None):
         """Hug someone."""
         await self._send_interaction(ctx, "hug", member)
 
-    @commands.command(name="pat")
+    @commands.hybrid_command(name="pat")
     async def pat(self, ctx: commands.Context, member: discord.Member = None):
         """Pat someone."""
         await self._send_interaction(ctx, "pat", member)
 
-    @commands.command(name="slap")
+    @commands.hybrid_command(name="slap")
     async def slap(self, ctx: commands.Context, member: discord.Member = None):
         """Slap someone (playfully)."""
         await self._send_interaction(ctx, "slap", member)
 
-    @commands.command(name="kiss")
+    @commands.hybrid_command(name="kiss")
     async def kiss(self, ctx: commands.Context, member: discord.Member = None):
         """Kiss someone."""
         await self._send_interaction(ctx, "kiss", member)
 
-    @commands.command(name="cuddle")
+    @commands.hybrid_command(name="cuddle")
     async def cuddle(self, ctx: commands.Context, member: discord.Member = None):
         """Cuddle someone."""
         await self._send_interaction(ctx, "cuddle", member)
 
-    @commands.command(name="poke")
+    @commands.hybrid_command(name="poke")
     async def poke(self, ctx: commands.Context, member: discord.Member = None):
         """Poke someone."""
         await self._send_interaction(ctx, "poke", member)
 
-    @commands.command(name="tickle")
+    @commands.hybrid_command(name="tickle")
     async def tickle(self, ctx: commands.Context, member: discord.Member = None):
         """Tickle someone."""
         await self._send_interaction(ctx, "tickle", member)
 
-    @commands.command(name="punch")
+    @commands.hybrid_command(name="punch")
     async def punch(self, ctx: commands.Context, member: discord.Member = None):
         """Punch someone (playfully)."""
         await self._send_interaction(ctx, "punch", member)
 
-    @commands.command(name="bite")
+    @commands.hybrid_command(name="bite")
     async def bite(self, ctx: commands.Context, member: discord.Member = None):
         """Bite someone."""
         await self._send_interaction(ctx, "bite", member)
 
-    @commands.command(name="highfive")
+    @commands.hybrid_command(name="highfive")
     async def highfive(self, ctx: commands.Context, member: discord.Member = None):
         """High-five someone."""
         await self._send_interaction(ctx, "highfive", member)
 
-    @commands.command(name="wave")
+    @commands.hybrid_command(name="wave")
     async def wave(self, ctx: commands.Context, member: discord.Member = None):
         """Wave at someone."""
         await self._send_interaction(ctx, "wave", member)
 
-    @commands.command(name="feed")
+    @commands.hybrid_command(name="feed")
     async def feed(self, ctx: commands.Context, member: discord.Member = None):
         """Feed someone."""
         await self._send_interaction(ctx, "feed", member)

@@ -13,7 +13,7 @@ class Information(commands.Cog):
         self.bot = bot
         self.start_time = time.time()
 
-    @commands.command(name="serverinfo", aliases=["si"])
+    @commands.hybrid_command(name="serverinfo", aliases=["si"])
     @commands.guild_only()
     async def serverinfo(self, ctx: commands.Context):
         """Show information about the current server."""
@@ -49,7 +49,7 @@ class Information(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command(name="userinfo", aliases=["ui", "whois"])
+    @commands.hybrid_command(name="userinfo", aliases=["ui", "whois"])
     @commands.guild_only()
     async def userinfo(self, ctx: commands.Context, member: discord.Member = None):
         """Show information about a user (defaults to yourself)."""
@@ -90,7 +90,7 @@ class Information(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command(name="avatar", aliases=["av", "pfp"])
+    @commands.hybrid_command(name="avatar", aliases=["av", "pfp"])
     async def avatar(self, ctx: commands.Context, member: discord.Member = None):
         """Show a user's avatar (defaults to yourself)."""
         member = member or ctx.author
@@ -104,7 +104,7 @@ class Information(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command(name="botinfo", aliases=["bi", "stats"])
+    @commands.hybrid_command(name="botinfo", aliases=["bi", "stats"])
     async def botinfo(self, ctx: commands.Context):
         """Show information about the bot itself."""
         uptime_seconds = int(time.time() - self.start_time)

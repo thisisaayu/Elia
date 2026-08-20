@@ -106,7 +106,7 @@ class ReactionRoles(commands.Cog):
             pass
 
     # ---------------- CONFIG COMMANDS ----------------
-    @commands.group(name="reactionrole", aliases=["rr"], invoke_without_command=True)
+    @commands.hybrid_group(name="reactionrole", aliases=["rr"], invoke_without_command=True)
     @commands.guild_only()
     async def reactionrole(self, ctx: commands.Context):
         """List all reaction role setups in this server."""

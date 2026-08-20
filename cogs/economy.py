@@ -19,20 +19,74 @@ STARTING_BALANCE = 500
 DAILY_MIN, DAILY_MAX = 200, 400
 DAILY_COOLDOWN = 24 * 3600
 
-WORK_MIN, WORK_MAX = 50, 150
 WORK_COOLDOWN = 60 * 60
 
-WORK_JOBS = [
-    "delivered packages across town",
-    "helped debug a server for a client",
-    "busked in the town square",
-    "walked a dozen dogs",
-    "flipped items at the market",
-    "worked a shift at the cafe",
-    "did some freelance writing",
-    "fixed a leaky faucet",
-]
-
+JOBS = {
+    "cashier": {
+        "emoji": "🛒", "pay_min": 40, "pay_max": 90,
+        "flavor": [
+            "You rang up customers all shift and earned {amount}.",
+            "You handled a long checkout line and earned {amount}.",
+            "You restocked shelves between customers and earned {amount}.",
+        ],
+    },
+    "delivery driver": {
+        "emoji": "🚚", "pay_min": 60, "pay_max": 120,
+        "flavor": [
+            "You delivered packages across town and earned {amount}.",
+            "You made it through rush hour traffic and earned {amount}.",
+            "You dropped off a big order on time and earned {amount}.",
+        ],
+    },
+    "chef": {
+        "emoji": "👨‍🍳", "pay_min": 70, "pay_max": 140,
+        "flavor": [
+            "You ran the kitchen through the dinner rush and earned {amount}.",
+            "You plated a signature dish and earned {amount}.",
+            "You survived a chaotic Friday night service and earned {amount}.",
+        ],
+    },
+    "mechanic": {
+        "emoji": "🔧", "pay_min": 80, "pay_max": 150,
+        "flavor": [
+            "You fixed a customer's engine and earned {amount}.",
+            "You changed a set of tires and earned {amount}.",
+            "You diagnosed a tricky electrical fault and earned {amount}.",
+        ],
+    },
+    "programmer": {
+        "emoji": "💻", "pay_min": 100, "pay_max": 220,
+        "flavor": [
+            "You shipped a feature on time and earned {amount}.",
+            "You squashed a nasty production bug and earned {amount}.",
+            "You did some freelance coding and earned {amount}.",
+        ],
+    },
+    "doctor": {
+        "emoji": "🩺", "pay_min": 150, "pay_max": 300,
+        "flavor": [
+            "You worked a long shift at the clinic and earned {amount}.",
+            "You handled a full waiting room and earned {amount}.",
+            "You covered an emergency shift and earned {amount}.",
+        ],
+    },
+    "lawyer": {
+        "emoji": "⚖️", "pay_min": 180, "pay_max": 350,
+        "flavor": [
+            "You won a case for your client and earned {amount}.",
+            "You billed a full day of consultations and earned {amount}.",
+            "You settled a dispute out of court and earned {amount}.",
+        ],
+    },
+    "streamer": {
+        "emoji": "🎥", "pay_min": 20, "pay_max": 400,
+        "flavor": [
+            "You went viral on stream and earned {amount}.",
+            "You had a slow stream night and only earned {amount}.",
+            "Your donations came through and you earned {amount}.",
+        ],
+    },
+}
 SLOT_EMOJIS = ["🍒", "🍋", "🍉", "⭐", "💎", "7️⃣"]
 SLOT_WEIGHTS = [30, 25, 20, 15, 7, 3]  # rarer symbols weighted lower
 SLOT_PAYOUTS = {  # multiplier applied to bet, keyed by matched emoji
@@ -53,7 +107,8 @@ def get_user_data(guild_id: int, user_id: int) -> dict:
     guild_data = all_data.get(str(guild_id), {})
     user_data = guild_data.get(str(user_id))
     if user_data is None:
-        user_data = {"balance": STARTING_BALANCE, "last_daily": 0, "last_work": 0}
+        user_data = {"balance": STARTING_BALANCE, "last_daily": 0, "last_work": 0, "job": None}
+    user_data.setdefault("job", None)  # backfill for users created before jobs existed
     return user_data
 
 
@@ -96,7 +151,7 @@ class Economy(commands.Cog):
         self.bot = bot
 
     # ---------------- BALANCE ----------------
-    @commands.command(name="balance", aliases=["bal", "aurels"])
+    @commands.hybrid_command(name="balance", aliases=["bal", "aurels"])
     @commands.guild_only()
     async def balance(self, ctx: commands.Context, member: discord.Member = None):
         """Check your (or someone else's) balance."""
@@ -113,7 +168,7 @@ class Economy(commands.Cog):
         await ctx.reply(embed=embed)
 
     # ---------------- DAILY ----------------
-    @commands.command(name="daily")
+    @commands.hybrid_command(name="daily")
     @commands.guild_only()
     async def daily(self, ctx: commands.Context):
         """Claim your daily reward."""
@@ -140,12 +195,102 @@ class Economy(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
+    # ---------------- JOBS ----------------
+    @commands.hybrid_command(name="jobs", aliases=["joblist"])
+    async def jobs(self, ctx: commands.Context):
+        """List all available jobs and their pay ranges."""
+        embed = discord.Embed(
+            title="💼 Available Jobs",
+            description=f"Use `{ctx.prefix}apply <job>` to get hired.",
+            color=colors.EMBED_COLOR,
+        )
+        for name, info in JOBS.items():
+            embed.add_field(
+                name=f"{info['emoji']} {name.title()}",
+                value=f"{fmt(info['pay_min'])} – {fmt(info['pay_max'])} per shift",
+                inline=False,
+            )
+        await ctx.reply(embed=embed)
+
+    @commands.hybrid_command(name="apply")
+    @commands.guild_only()
+    async def apply(self, ctx: commands.Context, *, job: str):
+        """Apply for a job: ,apply <job name>"""
+        job_key = job.lower().strip()
+        if job_key not in JOBS:
+            valid = ", ".join(j.title() for j in JOBS.keys())
+            embed = discord.Embed(
+                description=f"❌ That's not a real job. Available jobs: {valid}",
+                color=discord.Color.red(),
+            )
+            return await ctx.reply(embed=embed)
+
+        data = get_user_data(ctx.guild.id, ctx.author.id)
+        if data.get("job") == job_key:
+            embed = discord.Embed(description=f"⚠️ You already work as a **{job_key.title()}**.", color=discord.Color.orange())
+            return await ctx.reply(embed=embed)
+
+        data["job"] = job_key
+        save_user_data(ctx.guild.id, ctx.author.id, data)
+
+        info = JOBS[job_key]
+        embed = discord.Embed(
+            description=f"✅ Congrats! You're now working as a **{info['emoji']} {job_key.title()}**.\nUse `{ctx.prefix}work` to start earning.",
+            color=discord.Color.green(),
+        )
+        await ctx.reply(embed=embed)
+
+    @commands.hybrid_command(name="resign", aliases=["quit"])
+    @commands.guild_only()
+    async def resign(self, ctx: commands.Context):
+        """Quit your current job."""
+        data = get_user_data(ctx.guild.id, ctx.author.id)
+        if not data.get("job"):
+            embed = discord.Embed(description="❌ You don't have a job to resign from.", color=discord.Color.red())
+            return await ctx.reply(embed=embed)
+
+        old_job = data["job"]
+        data["job"] = None
+        save_user_data(ctx.guild.id, ctx.author.id, data)
+
+        embed = discord.Embed(description=f"👋 You resigned from your job as a **{old_job.title()}**.", color=colors.EMBED_COLOR)
+        await ctx.reply(embed=embed)
+
+    @commands.hybrid_command(name="myjob", aliases=["job"])
+    @commands.guild_only()
+    async def myjob(self, ctx: commands.Context):
+        """Show your current job."""
+        data = get_user_data(ctx.guild.id, ctx.author.id)
+        job_key = data.get("job")
+        if not job_key or job_key not in JOBS:
+            embed = discord.Embed(
+                description=f"You don't have a job yet. Use `{ctx.prefix}jobs` to see options.",
+                color=colors.EMBED_COLOR,
+            )
+            return await ctx.reply(embed=embed)
+
+        info = JOBS[job_key]
+        embed = discord.Embed(
+            description=f"{info['emoji']} You currently work as a **{job_key.title()}**.\nPay range: {fmt(info['pay_min'])} – {fmt(info['pay_max'])} per shift",
+            color=colors.EMBED_COLOR,
+        )
+        await ctx.reply(embed=embed)
+
     # ---------------- WORK ----------------
-    @commands.command(name="work")
+    @commands.hybrid_command(name="work")
     @commands.guild_only()
     async def work(self, ctx: commands.Context):
-        """Work for some quick Aurels."""
+        """Work your job for some Aurels. Requires a job — see ,jobs."""
         data = get_user_data(ctx.guild.id, ctx.author.id)
+        job_key = data.get("job")
+
+        if not job_key or job_key not in JOBS:
+            embed = discord.Embed(
+                description=f"❌ You don't have a job yet. Use `{ctx.prefix}jobs` to see options and `{ctx.prefix}apply <job>` to get hired.",
+                color=discord.Color.red(),
+            )
+            return await ctx.reply(embed=embed)
+
         now = time.time()
         elapsed = now - data["last_work"]
 
@@ -157,20 +302,22 @@ class Economy(commands.Cog):
             )
             return await ctx.reply(embed=embed)
 
-        reward = random.randint(WORK_MIN, WORK_MAX)
-        job = random.choice(WORK_JOBS)
+        info = JOBS[job_key]
+        reward = random.randint(info["pay_min"], info["pay_max"])
+        flavor = random.choice(info["flavor"]).format(amount=f"**{fmt(reward)}**")
+
         data["balance"] += reward
         data["last_work"] = now
         save_user_data(ctx.guild.id, ctx.author.id, data)
 
         embed = discord.Embed(
-            description=f"💼 You {job} and earned **{fmt(reward)}**!\nNew balance: **{fmt(data['balance'])}**",
+            description=f"{info['emoji']} {flavor}\nNew balance: **{fmt(data['balance'])}**",
             color=discord.Color.green(),
         )
         await ctx.reply(embed=embed)
 
     # ---------------- PAY ----------------
-    @commands.command(name="pay", aliases=["give"])
+    @commands.hybrid_command(name="pay", aliases=["give"])
     @commands.guild_only()
     async def pay(self, ctx: commands.Context, member: discord.Member, amount: int):
         """Pay another member some Aurels."""
@@ -203,7 +350,7 @@ class Economy(commands.Cog):
         await ctx.reply(embed=embed)
 
     # ---------------- LEADERBOARD ----------------
-    @commands.command(name="leaderboard", aliases=["lb"])
+    @commands.hybrid_command(name="leaderboard", aliases=["lb"])
     @commands.guild_only()
     async def leaderboard(self, ctx: commands.Context):
         """Show the top 10 richest members in this server."""
@@ -236,7 +383,7 @@ class Economy(commands.Cog):
         await ctx.reply(embed=embed)
 
     # ---------------- GAMBLING: COINFLIP ----------------
-    @commands.command(name="cf", aliases=["coinflipbet"])
+    @commands.hybrid_command(name="cf", aliases=["coinflipbet"])
     @commands.guild_only()
     async def coinflip_bet(self, ctx: commands.Context, amount: int, side: str = None):
         """Bet on a coinflip: ,cf <amount> <heads/tails>"""
@@ -271,7 +418,7 @@ class Economy(commands.Cog):
         await ctx.reply(embed=embed)
 
     # ---------------- GAMBLING: SLOTS ----------------
-    @commands.command(name="slots")
+    @commands.hybrid_command(name="slots")
     @commands.guild_only()
     async def slots(self, ctx: commands.Context, amount: int):
         """Play the slot machine: ,slots <amount>"""

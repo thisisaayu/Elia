@@ -183,7 +183,7 @@ class AutoModConfig(commands.Cog, name="AutoMod Config"):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.group(name="automod", invoke_without_command=True)
+    @commands.hybrid_group(name="automod", invoke_without_command=True)
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
     async def automod(self, ctx: commands.Context):

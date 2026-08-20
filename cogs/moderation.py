@@ -67,7 +67,7 @@ class Moderation(commands.Cog):
             raise error
 
     # ---------------- KICK ----------------
-    @commands.command(name="kick")
+    @commands.hybrid_command(name="kick")
     @has_mod_role()
     @commands.guild_only()
     @commands.bot_has_permissions(kick_members=True)
@@ -91,7 +91,7 @@ class Moderation(commands.Cog):
         await ctx.send(embed=embed)
 
     # ---------------- BAN ----------------
-    @commands.command(name="ban")
+    @commands.hybrid_command(name="ban")
     @has_mod_role()
     @commands.guild_only()
     @commands.bot_has_permissions(ban_members=True)
@@ -115,7 +115,7 @@ class Moderation(commands.Cog):
         await ctx.send(embed=embed)
 
     # ---------------- UNBAN ----------------
-    @commands.command(name="unban")
+    @commands.hybrid_command(name="unban")
     @has_mod_role()
     @commands.guild_only()
     @commands.bot_has_permissions(ban_members=True)
@@ -135,7 +135,7 @@ class Moderation(commands.Cog):
         await ctx.send(embed=embed)
 
     # ---------------- TIMEOUT ----------------
-    @commands.command(name="timeout", aliases=["mute"])
+    @commands.hybrid_command(name="timeout", aliases=["mute"])
     @has_mod_role()
     @commands.guild_only()
     @commands.bot_has_permissions(moderate_members=True)
@@ -158,7 +158,7 @@ class Moderation(commands.Cog):
         )
         await ctx.send(embed=embed)
 
-    @commands.command(name="untimeout", aliases=["unmute"])
+    @commands.hybrid_command(name="untimeout", aliases=["unmute"])
     @has_mod_role()
     @commands.guild_only()
     @commands.bot_has_permissions(moderate_members=True)
@@ -172,7 +172,7 @@ class Moderation(commands.Cog):
         await ctx.send(embed=embed)
 
     # ---------------- WARN ----------------
-    @commands.command(name="warn")
+    @commands.hybrid_command(name="warn")
     @has_mod_role()
     @commands.guild_only()
     async def warn(self, ctx: commands.Context, member: discord.Member, *, reason: str = "No reason provided"):
@@ -194,7 +194,7 @@ class Moderation(commands.Cog):
         )
         await ctx.send(embed=embed)
 
-    @commands.command(name="warnings", aliases=["warns"])
+    @commands.hybrid_command(name="warnings", aliases=["warns"])
     @has_mod_role()
     @commands.guild_only()
     async def warnings_cmd(self, ctx: commands.Context, member: discord.Member):
@@ -220,7 +220,7 @@ class Moderation(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command(name="clearwarnings", aliases=["clearwarns"])
+    @commands.hybrid_command(name="clearwarnings", aliases=["clearwarns"])
     @has_mod_role()
     @commands.guild_only()
     async def clearwarnings(self, ctx: commands.Context, member: discord.Member):
@@ -233,7 +233,7 @@ class Moderation(commands.Cog):
         await ctx.send(embed=embed)
 
     # ---------------- CLEAR / PURGE ----------------
-    @commands.command(name="purge", aliases=["c", "clear"])
+    @commands.hybrid_command(name="purge", aliases=["c", "clear"])
     @has_mod_role()
     @commands.guild_only()
     @commands.bot_has_permissions(manage_messages=True)
@@ -256,7 +256,7 @@ class Moderation(commands.Cog):
         await msg.delete(delay=4)
 
     # ---------------- SLOWMODE ----------------
-    @commands.command(name="slowmode")
+    @commands.hybrid_command(name="slowmode")
     @has_mod_role()
     @commands.guild_only()
     @commands.bot_has_permissions(manage_channels=True)

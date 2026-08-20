@@ -69,7 +69,7 @@ class Snipe(commands.Cog):
         self.edited[before.channel.id].appendleft(sniped)
 
     # ---------------- COMMANDS ----------------
-    @commands.command(name="snipe", aliases=["s"])
+    @commands.hybrid_command(name="snipe", aliases=["s"])
     @commands.guild_only()
     async def snipe(self, ctx: commands.Context, index: int = 1):
         """Show a recently deleted message in this channel. ,snipe 2 shows the 2nd most recent."""
@@ -102,7 +102,7 @@ class Snipe(commands.Cog):
         embed.set_footer(text=f"Deleted message {index}/{len(history)} • Requested by {ctx.author}")
         await ctx.reply(embed=embed)
 
-    @commands.command(name="editsnipe", aliases=["es"])
+    @commands.hybrid_command(name="editsnipe", aliases=["es"])
     @commands.guild_only()
     async def editsnipe(self, ctx: commands.Context, index: int = 1):
         """Show a recently edited message in this channel. ,editsnipe 2 shows the 2nd most recent."""
@@ -131,7 +131,7 @@ class Snipe(commands.Cog):
         embed.set_footer(text=f"Edited message {index}/{len(history)} • Requested by {ctx.author}")
         await ctx.reply(embed=embed)
 
-    @commands.command(name="clearsnipe", aliases=["cs"])
+    @commands.hybrid_command(name="clearsnipe", aliases=["cs"])
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def clearsnipe(self, ctx: commands.Context):

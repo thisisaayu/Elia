@@ -250,7 +250,7 @@ class EmbedBuilder(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.command(name="embed")
+    @commands.hybrid_command(name="embed")
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def embed(self, ctx: commands.Context, channel: discord.TextChannel = None):

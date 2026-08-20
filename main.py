@@ -35,6 +35,7 @@ bot = commands.Bot(command_prefix=PREFIX, intents=intents, help_command=None)
 # As we build more features, we just add their name here.
 INITIAL_COGS = [
     "cogs.core",
+    "cogs.devtools",
     "cogs.information",
     "cogs.config",
     "cogs.moderation",
@@ -57,6 +58,13 @@ async def on_ready():
     log.info(f"Logged in as {bot.user} (ID: {bot.user.id})")
     log.info(f"Prefix: {PREFIX}")
     log.info("------")
+    try:
+        synced = await bot.tree.sync()
+        log.info(f"Synced {len(synced)} slash command(s) globally.")
+        log.info("Note: global slash commands can take up to ~1 hour to appear everywhere the first time.")
+        log.info("Use ,sync in a server (bot owner only) to make them appear instantly in that server for testing.")
+    except discord.HTTPException as e:
+        log.error(f"Failed to sync slash commands: {e}")
 
 
 async def load_cogs():

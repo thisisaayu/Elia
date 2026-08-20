@@ -83,7 +83,7 @@ class AutoResponder(commands.Cog):
                 return  # only fire the first matching trigger per message
 
     # ---------------- CONFIG COMMANDS ----------------
-    @commands.group(name="autoresponder", aliases=["ar"], invoke_without_command=True)
+    @commands.hybrid_group(name="autoresponder", aliases=["ar"], invoke_without_command=True)
     @commands.guild_only()
     async def autoresponder(self, ctx: commands.Context):
         """List all autoresponders configured for this server."""

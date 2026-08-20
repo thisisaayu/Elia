@@ -75,7 +75,7 @@ class Lockdown(commands.Cog):
         return True
 
     # ---------------- LOCK ----------------
-    @commands.command(name="lock")
+    @commands.hybrid_command(name="lock")
     @has_mod_role()
     @commands.guild_only()
     @commands.bot_has_permissions(manage_channels=True)
@@ -90,7 +90,7 @@ class Lockdown(commands.Cog):
             embed = discord.Embed(description=f"⚠️ {channel.mention} is already locked.", color=discord.Color.orange())
         await ctx.send(embed=embed)
 
-    @commands.command(name="unlock")
+    @commands.hybrid_command(name="unlock")
     @has_mod_role()
     @commands.guild_only()
     @commands.bot_has_permissions(manage_channels=True)
@@ -106,7 +106,7 @@ class Lockdown(commands.Cog):
         await ctx.send(embed=embed)
 
     # ---------------- HIDE ----------------
-    @commands.command(name="hide")
+    @commands.hybrid_command(name="hide")
     @has_mod_role()
     @commands.guild_only()
     @commands.bot_has_permissions(manage_channels=True)
@@ -121,7 +121,7 @@ class Lockdown(commands.Cog):
             embed = discord.Embed(description=f"⚠️ {channel.mention} is already hidden.", color=discord.Color.orange())
         await ctx.send(embed=embed)
 
-    @commands.command(name="unhide")
+    @commands.hybrid_command(name="unhide")
     @has_mod_role()
     @commands.guild_only()
     @commands.bot_has_permissions(manage_channels=True)
@@ -137,7 +137,7 @@ class Lockdown(commands.Cog):
         await ctx.send(embed=embed)
 
     # ---------------- SERVER-WIDE ----------------
-    @commands.command(name="lockdown", aliases=["lockall"])
+    @commands.hybrid_command(name="lockdown", aliases=["lockall"])
     @has_mod_role()
     @commands.guild_only()
     @commands.bot_has_permissions(manage_channels=True)
@@ -157,7 +157,7 @@ class Lockdown(commands.Cog):
             color=discord.Color.red(),
         ))
 
-    @commands.command(name="unlockdown", aliases=["unlockall"])
+    @commands.hybrid_command(name="unlockdown", aliases=["unlockall"])
     @has_mod_role()
     @commands.guild_only()
     @commands.bot_has_permissions(manage_channels=True)

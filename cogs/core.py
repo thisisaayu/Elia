@@ -10,7 +10,7 @@ class Core(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.command(name="ping")
+    @commands.hybrid_command(name="ping")
     async def ping(self, ctx: commands.Context):
         """Check the bot's latency."""
         start = time.monotonic()

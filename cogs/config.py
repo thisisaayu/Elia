@@ -31,7 +31,7 @@ class Config(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.command(name="setmodrole")
+    @commands.hybrid_command(name="setmodrole")
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
     async def setmodrole(self, ctx: commands.Context, role: discord.Role):
@@ -43,7 +43,7 @@ class Config(commands.Cog):
         )
         await ctx.send(embed=embed)
 
-    @commands.command(name="modrole")
+    @commands.hybrid_command(name="modrole")
     @commands.guild_only()
     async def modrole(self, ctx: commands.Context):
         """Show the currently configured mod role."""
