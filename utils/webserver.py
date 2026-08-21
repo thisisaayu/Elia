@@ -21,6 +21,18 @@ DEV_TAG = "@f.vyn"
 CONTACT_URL = "https://discord.gg/vtcMwNwh23"  # your support server invite
 # ----------------------------------
 
+# Fallback favicon (a simple purple "E" icon), used only in the brief window
+# before the bot finishes logging in. Once ready, the site uses the bot's
+# real avatar as the favicon instead — no image file needed either way.
+FALLBACK_FAVICON = (
+    "data:image/svg+xml,"
+    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>"
+    "<rect width='100' height='100' rx='22' fill='%236c5ce7'/>"
+    "<text x='50' y='70' font-size='58' text-anchor='middle' "
+    "fill='white' font-family='Arial,sans-serif' font-weight='bold'>E</text>"
+    "</svg>"
+)
+
 
 BASE_STYLE = """
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -264,7 +276,7 @@ BASE_STYLE = """
 """
 
 
-def render_page(inner_html: str, wide: bool = False) -> str:
+def render_page(inner_html: str, wide: bool = False, favicon_url: str = FALLBACK_FAVICON) -> str:
     card_class = "card wide-card" if wide else "card"
     return f"""
 <!DOCTYPE html>
@@ -272,6 +284,7 @@ def render_page(inner_html: str, wide: bool = False) -> str:
 <head>
     <title>Elia</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{favicon_url}">
     {BASE_STYLE}
 </head>
 <body>
@@ -300,6 +313,11 @@ def build_app(bot: commands.Bot) -> web.Application:
     app = web.Application()
     total_commands = sum(len(m["commands"]) for m in MODULES.values())
 
+    def favicon() -> str:
+        if bot.user:
+            return str(bot.user.display_avatar.url)
+        return FALLBACK_FAVICON
+
     # ---------------- HOME ----------------
     async def home(request):
         if not bot.is_ready():
@@ -307,7 +325,7 @@ def build_app(bot: commands.Bot) -> web.Application:
                 <h1>Elia</h1>
                 <div class="status offline"><span class="dot offline"></span>Offline</div>
             """
-            return web.Response(text=render_page(inner), content_type="text/html", status=503)
+            return web.Response(text=render_page(inner, favicon_url=favicon()), content_type="text/html", status=503)
 
         dev_name = DEV_TAG
         inner = f"""
@@ -323,7 +341,7 @@ def build_app(bot: commands.Bot) -> web.Application:
             </div>
             <a class="btn" href="/menu">Next</a>
         """
-        return web.Response(text=render_page(inner), content_type="text/html")
+        return web.Response(text=render_page(inner, favicon_url=favicon()), content_type="text/html")
 
     # ---------------- MENU ----------------
     async def menu(request):
@@ -337,7 +355,7 @@ def build_app(bot: commands.Bot) -> web.Application:
             </div>
             <div class="back-wrap"><a class="btn secondary" href="/">Back</a></div>
         """
-        return web.Response(text=render_page(inner), content_type="text/html")
+        return web.Response(text=render_page(inner, favicon_url=favicon()), content_type="text/html")
 
     # ---------------- HELP ----------------
     async def help_page(request):
@@ -347,7 +365,7 @@ def build_app(bot: commands.Bot) -> web.Application:
             <a class="btn" href="/commands">Commands</a>
             <div class="back-wrap"><a class="btn secondary" href="/menu">Back</a></div>
         """
-        return web.Response(text=render_page(inner), content_type="text/html")
+        return web.Response(text=render_page(inner, favicon_url=favicon()), content_type="text/html")
 
     # ---------------- COMMANDS (generated live from help_data.py) ----------------
     async def commands_page(request):
@@ -371,7 +389,7 @@ def build_app(bot: commands.Bot) -> web.Application:
             {"".join(sections)}
             <div class="back-wrap"><a class="btn secondary" href="/help">Back</a></div>
         """
-        return web.Response(text=render_page(inner, wide=True), content_type="text/html")
+        return web.Response(text=render_page(inner, wide=True, favicon_url=favicon()), content_type="text/html")
 
     # ---------------- CONTACT ----------------
     async def contact(request):
@@ -381,7 +399,7 @@ def build_app(bot: commands.Bot) -> web.Application:
             <a class="btn" href="{CONTACT_URL}" target="_blank">Join Support Server</a>
             <div class="back-wrap"><a class="btn secondary" href="/menu">Back</a></div>
         """
-        return web.Response(text=render_page(inner), content_type="text/html")
+        return web.Response(text=render_page(inner, favicon_url=favicon()), content_type="text/html")
 
     # ---------------- PRIVACY ----------------
     async def privacy(request):
@@ -411,7 +429,7 @@ def build_app(bot: commands.Bot) -> web.Application:
             </div>
             <div class="back-wrap"><a class="btn secondary" href="/menu">Back</a></div>
         """
-        return web.Response(text=render_page(inner, wide=True), content_type="text/html")
+        return web.Response(text=render_page(inner, wide=True, favicon_url=favicon()), content_type="text/html")
 
     # ---------------- TERMS ----------------
     async def terms(request):
@@ -446,7 +464,7 @@ def build_app(bot: commands.Bot) -> web.Application:
             </div>
             <div class="back-wrap"><a class="btn secondary" href="/menu">Back</a></div>
         """
-        return web.Response(text=render_page(inner, wide=True), content_type="text/html")
+        return web.Response(text=render_page(inner, wide=True, favicon_url=favicon()), content_type="text/html")
 
     async def health(request):
         return web.json_response({"status": "ok", "ready": bot.is_ready()})
