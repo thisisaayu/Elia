@@ -18,10 +18,9 @@ START_TIME = time.time()
 
 # ---- Edit these for your bot ----
 DEV_TAG = "@f.vyn"
-CONTACT_URL = "https://discord.gg/your-invite-here"  # your support server invite
+CONTACT_URL = "https://discord.gg/vtcMwNwh23"  # your support server invite
 # ----------------------------------
 
-_dev_name_cache = {"name": None}
 
 BASE_STYLE = """
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -296,22 +295,12 @@ def build_app(bot: commands.Bot) -> web.Application:
     app = web.Application()
     total_commands = sum(len(m["commands"]) for m in MODULES.values())
 
-    async def get_dev_name():
-        if _dev_name_cache["name"]:
-            return _dev_name_cache["name"]
-        try:
-            info = await bot.application_info()
-            _dev_name_cache["name"] = str(info.owner)
-            return _dev_name_cache["name"]
-        except Exception:
-            return DEV_TAG
-
     # ---------------- HOME ----------------
     async def home(request):
         if not bot.is_ready():
             return web.Response(text=render_page("<h1>Starting up...</h1>"), content_type="text/html", status=503)
 
-        dev_name = await get_dev_name()
+        dev_name = DEV_TAG
         inner = f"""
             <div class="avatar-ring">
                 <img class="avatar" src="{bot.user.display_avatar.url}" alt="avatar">
