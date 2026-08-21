@@ -6,6 +6,8 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
+from utils.webserver import start_webserver
+
 # Load variables from the .env file (DISCORD_TOKEN=...)
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -81,8 +83,19 @@ async def main():
     if not TOKEN:
         log.error("No DISCORD_TOKEN found. Make sure it's set in your .env / Environment variables.")
         return
+
+    # Wispbyte's subdomain feature needs something listening on the port shown
+    # in its panel. Check "SERVER PORT" there and confirm it matches WEB_PORT below
+    # (or set a WEB_PORT variable in Wispbyte's Environment tab to override it).
+    web_port = int(os.getenv("WEB_PORT", "14441"))
+
     async with bot:
         await load_cogs()
+        try:
+            await start_webserver(bot, host="0.0.0.0", port=web_port)
+            log.info(f"Web status page listening on 0.0.0.0:{web_port}")
+        except OSError as e:
+            log.error(f"Could not start the web server on port {web_port}: {e}")
         await bot.start(TOKEN)
 
 
