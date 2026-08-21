@@ -172,6 +172,11 @@ BASE_STYLE = """
         0%, 100% { opacity: 1; transform: scale(1); }
         50%      { opacity: 0.5; transform: scale(0.8); }
     }
+    .status.offline { color: #f87171; }
+    .status .dot.offline {
+        background: #f87171;
+        box-shadow: 0 0 10px #f87171;
+    }
 
     .btn-grid {
         display: grid;
@@ -298,7 +303,11 @@ def build_app(bot: commands.Bot) -> web.Application:
     # ---------------- HOME ----------------
     async def home(request):
         if not bot.is_ready():
-            return web.Response(text=render_page("<h1>Starting up...</h1>"), content_type="text/html", status=503)
+            inner = """
+                <h1>Elia</h1>
+                <div class="status offline"><span class="dot offline"></span>Offline</div>
+            """
+            return web.Response(text=render_page(inner), content_type="text/html", status=503)
 
         dev_name = DEV_TAG
         inner = f"""
@@ -306,7 +315,7 @@ def build_app(bot: commands.Bot) -> web.Application:
                 <img class="avatar" src="{bot.user.display_avatar.url}" alt="avatar">
             </div>
             <h1>{bot.user.name}</h1>
-            <div class="status"><span class="dot"></span>Online · {format_uptime(time.time() - START_TIME)} uptime</div>
+            <div class="status"><span class="dot"></span>Online</div>
             <div class="meta">
                 dev: <b>{dev_name}</b><br>
                 modules: <b>{len(MODULES)}</b> &nbsp;·&nbsp; commands: <b>{total_commands}</b><br>
