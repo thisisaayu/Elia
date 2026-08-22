@@ -27,7 +27,7 @@ CONTACT_URL = "https://discord.gg/vtcMwNwh23"  # your support server invite
 FALLBACK_FAVICON = (
     "data:image/svg+xml,"
     "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>"
-    "<rect width='100' height='100' rx='22' fill='%236c5ce7'/>"
+    "<rect width='100' height='100' rx='22' fill='%23222222'/>"
     "<text x='50' y='70' font-size='58' text-anchor='middle' "
     "fill='white' font-family='Arial,sans-serif' font-weight='bold'>E</text>"
     "</svg>"
@@ -41,8 +41,8 @@ BASE_STYLE = """
     * { box-sizing: border-box; }
 
     body {
-        background: #08080f;
-        color: #e8e8f5;
+        background: #000000;
+        color: #f0f0f0;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         display: flex;
         align-items: center;
@@ -67,12 +67,12 @@ BASE_STYLE = """
         animation: drift 16s ease-in-out infinite alternate;
     }
     body::before {
-        background: #6c5ce7;
+        background: #ffffff;
         top: -120px;
         left: -100px;
     }
     body::after {
-        background: #4834d4;
+        background: #808080;
         bottom: -140px;
         right: -100px;
         animation-delay: -8s;
@@ -101,7 +101,7 @@ BASE_STYLE = """
     .card {
         position: relative;
         z-index: 1;
-        background: rgba(24, 24, 38, 0.65);
+        background: rgba(20, 20, 20, 0.65);
         backdrop-filter: blur(24px);
         -webkit-backdrop-filter: blur(24px);
         border: 1px solid rgba(255,255,255,0.08);
@@ -127,15 +127,15 @@ BASE_STYLE = """
         border-radius: 50%;
         margin: 0 auto 20px;
         padding: 3px;
-        background: linear-gradient(135deg, #7c6bf0, #4834d4, #a78bfa);
-        box-shadow: 0 0 30px rgba(124, 107, 240, 0.35);
+        background: linear-gradient(135deg, #ffffff, #808080, #1a1a1a);
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
     }
     img.avatar {
         width: 100%;
         height: 100%;
         border-radius: 50%;
         display: block;
-        border: 3px solid #14141f;
+        border: 3px solid #0a0a0a;
     }
 
     h1 {
@@ -143,15 +143,15 @@ BASE_STYLE = """
         font-size: 28px;
         font-weight: 800;
         letter-spacing: -0.02em;
-        background: linear-gradient(135deg, #fff, #c4c4e0);
+        background: linear-gradient(135deg, #ffffff, #999999);
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
     }
-    h2 { font-weight: 500; color: #9c9cb8; margin: 0 0 26px; font-size: 15px; }
+    h2 { font-weight: 500; color: #a0a0a0; margin: 0 0 26px; font-size: 15px; }
 
     .meta {
-        color: #a8a8c4;
+        color: #b0b0b0;
         font-size: 13.5px;
         margin-bottom: 26px;
         line-height: 2;
@@ -160,7 +160,7 @@ BASE_STYLE = """
         border-radius: 14px;
         padding: 14px 18px;
     }
-    .meta b { color: #e8e8f5; font-weight: 600; }
+    .meta b { color: #ffffff; font-weight: 600; }
 
     .status {
         display: inline-flex;
@@ -199,8 +199,8 @@ BASE_STYLE = """
 
     a.btn, button.btn {
         display: block;
-        background: linear-gradient(135deg, #7c6bf0, #6c5ce7);
-        color: #fff;
+        background: linear-gradient(135deg, #ffffff, #d0d0d0, #a0a0a0);
+        color: #0a0a0a;
         text-decoration: none;
         padding: 13px 20px;
         border-radius: 12px;
@@ -209,17 +209,17 @@ BASE_STYLE = """
         border: none;
         cursor: pointer;
         transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
-        box-shadow: 0 4px 16px rgba(108, 92, 231, 0.3);
+        box-shadow: 0 4px 16px rgba(255, 255, 255, 0.15);
     }
     a.btn:hover, button.btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(108, 92, 231, 0.45);
+        box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25);
     }
     a.btn:active, button.btn:active { transform: translateY(0); }
 
     a.btn.secondary {
         background: rgba(255,255,255,0.05);
-        color: #d0d0e8;
+        color: #d5d5d5;
         border: 1px solid rgba(255,255,255,0.1);
         box-shadow: none;
     }
@@ -232,7 +232,7 @@ BASE_STYLE = """
 
     table { width: 100%; border-collapse: collapse; margin: 14px 0 6px; text-align: left; }
     th {
-        color: #8a8aac;
+        color: #999999;
         font-size: 11px;
         text-transform: uppercase;
         letter-spacing: 0.05em;
@@ -242,12 +242,12 @@ BASE_STYLE = """
     td {
         padding: 10px 10px;
         font-size: 13.5px;
-        color: #c8c8dc;
+        color: #c9c9c9;
         border-bottom: 1px solid rgba(255,255,255,0.05);
         vertical-align: top;
     }
     td.cmd {
-        color: #b3a5f7;
+        color: #e0e0e0;
         font-family: 'JetBrains Mono', monospace;
         white-space: nowrap;
         font-size: 13px;
@@ -257,21 +257,21 @@ BASE_STYLE = """
         margin: 30px 0 4px;
         font-size: 14px;
         font-weight: 700;
-        color: #e8e8f5;
+        color: #f0f0f0;
         display: flex;
         align-items: center;
         gap: 8px;
     }
 
-    .content-text { text-align: left; font-size: 14px; line-height: 1.75; color: #b8b8d0; }
-    .content-text h3 { color: #e8e8f5; font-size: 14.5px; font-weight: 700; margin: 24px 0 8px; }
+    .content-text { text-align: left; font-size: 14px; line-height: 1.75; color: #b5b5b5; }
+    .content-text h3 { color: #ffffff; font-size: 14.5px; font-weight: 700; margin: 24px 0 8px; }
     .content-text p { margin: 0 0 12px; }
 
     .wide-card { max-width: 720px; }
 
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(124,107,240,0.4); border-radius: 8px; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25); border-radius: 8px; }
 </style>
 """
 
